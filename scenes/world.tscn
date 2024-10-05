@@ -1,0 +1,461 @@
+[gd_scene load_steps=51 format=3 uid="uid://cy0n5wt8t00ut"]
+
+[ext_resource type="Shader" path="res://Scenes/Sand.gdshader" id="1_af27u"]
+[ext_resource type="PackedScene" uid="uid://dee5g48ibmrjj" path="res://scenes/player.tscn" id="2_2km2c"]
+[ext_resource type="Texture2D" uid="uid://dfoduoh537ikq" path="res://icon.svg" id="2_gi43k"]
+[ext_resource type="Shader" path="res://Scenes/Distortion.gdshader" id="3_ftkt7"]
+[ext_resource type="Script" path="res://Scenes/chromatic_aberration.gd" id="3_lcvsg"]
+[ext_resource type="Shader" path="res://VFX/ChromaticAberration.gdshader" id="4_udfpf"]
+[ext_resource type="Shader" path="res://Scenes/SkyColor.gdshader" id="6_m8ral"]
+[ext_resource type="Script" path="res://Scenes/SandPainter.gd" id="8_r47ni"]
+[ext_resource type="Texture2D" uid="uid://dnlkdn2iq35bu" path="res://VFX/BlurCircleMask.png" id="9_rjp6g"]
+[ext_resource type="PackedScene" uid="uid://ddjnnv8dqoig5" path="res://Friends/FireExtinguisher/FireExtinguisher.tscn" id="10_ow0kb"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w26ob"]
+shader = ExtResource("4_udfpf")
+
+[sub_resource type="Curve" id="Curve_vfoe3"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.326087, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_a5od6"]
+curve = SubResource("Curve_vfoe3")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1mif4"]
+particle_flag_align_y = true
+emission_shape = 3
+emission_box_extents = Vector3(5, 5, 5)
+angle_min = -720.0
+angle_max = 720.0
+initial_velocity_min = 10.0
+initial_velocity_max = 10.0
+gravity = Vector3(0, -1, 0)
+scale_min = 0.1
+scale_curve = SubResource("CurveTexture_a5od6")
+turbulence_enabled = true
+turbulence_noise_speed_random = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pjxle"]
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.757479, 0.44358, 0.204481, 1)
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_keapx"]
+material = SubResource("StandardMaterial3D_pjxle")
+size = Vector2(0.1, 0.1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vljfi"]
+shader = ExtResource("6_m8ral")
+shader_parameter/color = Color(0.698039, 0.411765, 0.176471, 1)
+
+[sub_resource type="Sky" id="Sky_se7or"]
+sky_material = SubResource("ShaderMaterial_vljfi")
+
+[sub_resource type="Environment" id="Environment_3u4wx"]
+background_mode = 2
+background_color = Color(0.698039, 0.411765, 0.176471, 1)
+sky = SubResource("Sky_se7or")
+ambient_light_source = 2
+ambient_light_color = Color(0.708041, 0.319978, 0.128123, 1)
+tonemap_mode = 3
+glow_enabled = true
+glow_normalized = true
+glow_intensity = 8.0
+glow_blend_mode = 1
+glow_hdr_threshold = 0.37
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.699467, 0.413232, 0.17669, 1)
+fog_density = 1.0
+fog_sky_affect = 0.0
+fog_depth_curve = 0.329878
+fog_depth_begin = 0.0
+fog_depth_end = 20.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_b1s1v"]
+fractal_type = 2
+fractal_octaves = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6y10k"]
+seamless = true
+seamless_blend_skirt = 1.0
+noise = SubResource("FastNoiseLite_b1s1v")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_jw1rx"]
+noise_type = 2
+fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_s6c6g"]
+seamless = true
+seamless_blend_skirt = 1.0
+noise = SubResource("FastNoiseLite_jw1rx")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hp051"]
+render_priority = 0
+shader = ExtResource("3_ftkt7")
+shader_parameter/alpha = 1.0
+shader_parameter/noise = SubResource("NoiseTexture2D_6y10k")
+shader_parameter/noise2 = SubResource("NoiseTexture2D_s6c6g")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_om3mu"]
+material = SubResource("ShaderMaterial_hp051")
+flip_faces = true
+orientation = 2
+
+[sub_resource type="Animation" id="Animation_bw4t5"]
+resource_name = "DayNightCycle"
+length = 12.0
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sun:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 12),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-1.309, 0, 0), Vector3(4.97419, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sun:light_energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(2, 3, 8, 9),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [1.0, 0.0, 0.0, 1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WorldEnvironment:environment:ambient_light_color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 2, 3, 8, 9, 12),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(0.708041, 0.319978, 0.128123, 1), Color(0.708041, 0.319978, 0.128123, 1), Color(0.561633, 0.31917, 0.735265, 1), Color(0.561633, 0.31917, 0.735265, 1), Color(0.708041, 0.319978, 0.128123, 1), Color(0.708041, 0.319978, 0.128123, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("WorldEnvironment:environment:fog_light_color")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 2, 3, 8, 9, 12),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(0.699467, 0.413232, 0.17669, 1), Color(0.699467, 0.413232, 0.17669, 1), Color(0.634154, 0.349141, 0.424241, 1), Color(0.634154, 0.349141, 0.424241, 1), Color(0.699467, 0.413232, 0.17669, 1), Color(0.699467, 0.413232, 0.17669, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("WorldEnvironment:environment:sky:sky_material:shader_parameter/color")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 2, 3, 8, 9, 12),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(0.698039, 0.411765, 0.176471, 1), Color(0.698039, 0.411765, 0.176471, 1), Color(0.635294, 0.34902, 0.423529, 1), Color(0.635294, 0.34902, 0.423529, 1), Color(0.698039, 0.411765, 0.176471, 1), Color(0.698039, 0.411765, 0.176471, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("HeatDistortion:mesh:material:shader_parameter/alpha")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 2, 3, 8, 9, 12),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [1.0, 1.0, 0.0, 0.0, 1.0, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_vs3cq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sun:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-1.309, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sun:light_energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WorldEnvironment:environment:ambient_light_color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.708041, 0.319978, 0.128123, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("WorldEnvironment:environment:fog_light_color")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.699467, 0.413232, 0.17669, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("WorldEnvironment:environment:sky:sky_material:shader_parameter/color")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.698039, 0.411765, 0.176471, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("HeatDistortion:mesh:material:shader_parameter/alpha")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yfjjx"]
+_data = {
+"DayNightCycle": SubResource("Animation_bw4t5"),
+"RESET": SubResource("Animation_vs3cq")
+}
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_d215g"]
+viewport_path = NodePath("Sand/SandViewport")
+
+[sub_resource type="Gradient" id="Gradient_k6ri1"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_v0g5r"]
+fractal_type = 2
+fractal_octaves = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_c6nqs"]
+seamless = true
+seamless_blend_skirt = 1.0
+color_ramp = SubResource("Gradient_k6ri1")
+noise = SubResource("FastNoiseLite_v0g5r")
+
+[sub_resource type="Gradient" id="Gradient_khk7h"]
+offsets = PackedFloat32Array(0, 0.97619, 1)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0.943089, 0.943089, 0.943089, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_c3k1m"]
+seed = 295
+fractal_type = 0
+fractal_octaves = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_shbls"]
+seamless = true
+seamless_blend_skirt = 1.0
+color_ramp = SubResource("Gradient_khk7h")
+noise = SubResource("FastNoiseLite_c3k1m")
+
+[sub_resource type="Gradient" id="Gradient_va2cm"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.35, 0.162167, 0.028, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_14s1n"]
+gradient = SubResource("Gradient_va2cm")
+
+[sub_resource type="Gradient" id="Gradient_cc5pd"]
+offsets = PackedFloat32Array(0.611111, 0.84127, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.265306, 0.265306, 0.265306, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_jjbor"]
+noise_type = 2
+frequency = 0.2001
+fractal_type = 0
+cellular_return_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0bogy"]
+seamless_blend_skirt = 1.0
+color_ramp = SubResource("Gradient_cc5pd")
+noise = SubResource("FastNoiseLite_jjbor")
+
+[sub_resource type="Gradient" id="Gradient_2sylu"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_0yamp"]
+fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_gp1jw"]
+seamless = true
+seamless_blend_skirt = 1.0
+color_ramp = SubResource("Gradient_2sylu")
+noise = SubResource("FastNoiseLite_0yamp")
+
+[sub_resource type="Gradient" id="Gradient_chchf"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_s1c4l"]
+seed = 340
+fractal_type = 2
+fractal_octaves = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ek8pj"]
+seamless = true
+seamless_blend_skirt = 1.0
+color_ramp = SubResource("Gradient_chchf")
+noise = SubResource("FastNoiseLite_s1c4l")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kk2af"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("1_af27u")
+shader_parameter/sand_tint = Color(0.885106, 0.526847, 0.316521, 1)
+shader_parameter/dark_tint = Color(0.52, 0.359147, 0.1872, 1)
+shader_parameter/sand_height = 0.7
+shader_parameter/sand_ramp = SubResource("GradientTexture1D_14s1n")
+shader_parameter/wind_noise = SubResource("NoiseTexture2D_gp1jw")
+shader_parameter/wind_noise2 = SubResource("NoiseTexture2D_ek8pj")
+shader_parameter/specular_noise = SubResource("NoiseTexture2D_0bogy")
+shader_parameter/sand_noise = SubResource("NoiseTexture2D_c6nqs")
+shader_parameter/sand_noise2 = SubResource("NoiseTexture2D_shbls")
+shader_parameter/deformMask = SubResource("ViewportTexture_d215g")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_sqll5"]
+resource_local_to_scene = true
+material = SubResource("ShaderMaterial_kk2af")
+size = Vector2(200, 200)
+subdivide_width = 1000
+subdivide_depth = 1000
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_1oubx"]
+data = PackedVector3Array(50, 0, 50, -50, 0, 50, 50, 0, -50, -50, 0, 50, -50, 0, -50, 50, 0, -50)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_adw5w"]
+viewport_path = NodePath("Sand/SandViewport")
+
+[node name="World" type="Node3D"]
+
+[node name="VFX" type="Node3D" parent="."]
+
+[node name="Icon" type="Sprite2D" parent="VFX"]
+visible = false
+z_index = -1
+position = Vector2(1052, 564)
+texture = ExtResource("2_gi43k")
+
+[node name="ChromaticAberration" type="ColorRect" parent="VFX"]
+material = SubResource("ShaderMaterial_w26ob")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("3_lcvsg")
+
+[node name="Player" parent="." instance=ExtResource("2_2km2c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Sand" type="GPUParticles3D" parent="Player"]
+visible = false
+cast_shadow = 0
+amount = 10000
+lifetime = 5.0
+fixed_fps = 60
+interpolate = false
+process_material = SubResource("ParticleProcessMaterial_1mif4")
+draw_pass_1 = SubResource("QuadMesh_keapx")
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_3u4wx")
+
+[node name="Sun" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 0.258816, 0.965927, 0, -0.965927, 0.258816, 0, 0, 0)
+directional_shadow_split_1 = 0.05
+directional_shadow_split_2 = 0.1
+directional_shadow_split_3 = 0.25
+directional_shadow_blend_splits = true
+directional_shadow_max_distance = 50.0
+
+[node name="HeatDistortion" type="MeshInstance3D" parent="Environment"]
+extra_cull_margin = 16384.0
+mesh = SubResource("PlaneMesh_om3mu")
+skeleton = NodePath("../../VFX")
+
+[node name="DayNightCycle" type="AnimationPlayer" parent="Environment"]
+libraries = {
+"": SubResource("AnimationLibrary_yfjjx")
+}
+autoplay = "DayNightCycle"
+speed_scale = 0.05
+
+[node name="Sand" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_sqll5")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Sand"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sand/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_1oubx")
+
+[node name="SandViewport" type="SubViewport" parent="Sand" node_paths=PackedStringArray("player")]
+transparent_bg = true
+render_target_clear_mode = 2
+render_target_update_mode = 4
+script = ExtResource("8_r47ni")
+worldextents = Rect2(0, 0, 200, 200)
+player = NodePath("../../Player")
+
+[node name="SandPaintbrush" type="Sprite2D" parent="Sand/SandViewport"]
+texture = ExtResource("9_rjp6g")
+
+[node name="ClearBrush" type="Sprite2D" parent="Sand/SandViewport"]
+modulate = Color(0, 0, 0, 1)
+scale = Vector2(2, 2)
+texture = ExtResource("9_rjp6g")
+
+[node name="SandVisual" type="Sprite2D" parent="Sand"]
+position = Vector2(68, 69)
+scale = Vector2(0.25, 0.25)
+texture = SubResource("ViewportTexture_adw5w")
+
+[node name="MeshInstance3D" parent="." instance=ExtResource("10_ow0kb")]
+transform = Transform3D(0.943164, 0.312066, -0.114262, -0.22021, 0.844373, 0.488408, 0.248895, -0.435487, 0.865102, 0.806391, 0.69374, -2.65904)

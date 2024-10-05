@@ -1,0 +1,88 @@
+[gd_scene load_steps=9 format=3 uid="uid://dee5g48ibmrjj"]
+
+[ext_resource type="Script" path="res://Scenes/player.gd" id="1_f8e2j"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_u8f1e"]
+radius = 0.35
+height = 1.8
+
+[sub_resource type="Animation" id="Animation_xh458"]
+resource_name = "Awaken"
+
+[sub_resource type="Animation" id="Animation_bpxoe"]
+resource_name = "Head_Bob"
+length = 0.5
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0.45, 0), Vector3(0, 0.4, 0), Vector3(0, 0.45, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ek1wi"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.45, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_faiqc"]
+resource_name = "Stand"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.45, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_rmicl"]
+_data = {
+"Awaken": SubResource("Animation_xh458"),
+"Head_Bob": SubResource("Animation_bpxoe"),
+"RESET": SubResource("Animation_ek1wi"),
+"Stand": SubResource("Animation_faiqc")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pnsfm"]
+size = Vector3(0.2, 0.2, 5)
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_f8e2j")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_u8f1e")
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Camera"]
+libraries = {
+"": SubResource("AnimationLibrary_rmicl")
+}
+playback_default_blend_time = 0.5
+
+[node name="LookCast" type="ShapeCast3D" parent="Camera"]
+shape = SubResource("BoxShape3D_pnsfm")
+target_position = Vector3(0, 0, -2.5)
