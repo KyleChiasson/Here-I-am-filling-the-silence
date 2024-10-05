@@ -1,6 +1,5 @@
 extends Control
 
-@onready var game_manager: Node = %GameManager
 @onready var label: Label = $Label
 
 func SetText(message : String):
@@ -8,9 +7,10 @@ func SetText(message : String):
 	regex.compile("[A-Za-z']+")
 	var wordResults = regex.search_all(message)
 	for word in wordResults:
-		if(!game_manager.HasWord(word)):
+		if(!GameManager.HasWord(word.get_string())):
 			var temp : String = ""
-			for i in word.count:
+			for i in word.get_string().length():
 				temp += '-'
-			message.replace(word, temp)
+			message = message.replace(word.get_string(), temp)
+			print("\"" + word.get_string() + "\"")
 	label.text = message
