@@ -6,11 +6,18 @@ func SetText(message : String):
 	var regex = RegEx.new()
 	regex.compile("[A-Za-z']+")
 	var wordResults = regex.search_all(message)
+	var index = 0
 	for word in wordResults:
-		if(!GameManager.HasWord(word.get_string())):
-			var temp : String = ""
-			for i in word.get_string().length():
-				temp += '-'
-			message = message.replace(word.get_string(), temp)
-			print("\"" + word.get_string() + "\"")
+		var ws = word.get_string()
+		while (message[index] != ws[0]):
+				index += 1
+		if(!GameManager.HasWord(ws)):
+			for i in ws.length():
+				message[index] = '-'
+				i += 1
+				index += 1
+		else:
+			for i in ws.length():
+				i += 1
+				index += 1
 	label.text = message
