@@ -1,7 +1,16 @@
 extends Control
 
+@onready var game_manager: Node = %GameManager
 @onready var label: Label = $Label
 
-func SetText(message):
-	#refrence a game manager for a list of usable words and replace the rest with dashes
-	pass
+func SetText(message : String):
+	var regex = RegEx.new()
+	regex.compile("[A-Za-z']+")
+	var wordResults = regex.search_all(message)
+	for word in wordResults:
+		if(!game_manager.HasWord(word)):
+			var temp : String = ""
+			for i in word.count:
+				temp += '-'
+			message.replace(word, temp)
+	label.text = message
