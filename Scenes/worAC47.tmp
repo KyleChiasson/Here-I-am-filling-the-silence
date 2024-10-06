@@ -1,11 +1,7 @@
-[gd_scene load_steps=67 format=3 uid="uid://cy0n5wt8t00ut"]
+[gd_scene load_steps=65 format=3 uid="uid://cy0n5wt8t00ut"]
 
 [ext_resource type="Shader" path="res://VFX/Sand.gdshader" id="1_af27u"]
-<<<<<<< Updated upstream
-[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="2_2km2c"]
-=======
 [ext_resource type="PackedScene" uid="uid://dee5g48ibmrjj" path="res://Scenes/player.tscn" id="2_2km2c"]
->>>>>>> Stashed changes
 [ext_resource type="Texture2D" uid="uid://dfoduoh537ikq" path="res://icon.svg" id="2_gi43k"]
 [ext_resource type="Shader" path="res://VFX/Distortion.gdshader" id="3_ftkt7"]
 [ext_resource type="Script" path="res://VFX/chromatic_aberration.gd" id="3_lcvsg"]
@@ -14,7 +10,74 @@
 [ext_resource type="Script" path="res://VFX/SandPainter.gd" id="8_r47ni"]
 [ext_resource type="Texture2D" uid="uid://dnlkdn2iq35bu" path="res://VFX/BlurCircleMask.png" id="9_rjp6g"]
 [ext_resource type="PackedScene" uid="uid://ddjnnv8dqoig5" path="res://Friends/FireExtinguisher/FireExtinguisher.tscn" id="10_ow0kb"]
-[ext_resource type="PackedScene" uid="uid://d0xa08888e7gm" path="res://Environment/Foliage/Tree/tree.tscn" id="11_3i617"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w26ob"]
+shader = ExtResource("4_udfpf")
+
+[sub_resource type="Curve" id="Curve_vfoe3"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.326087, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_a5od6"]
+curve = SubResource("Curve_vfoe3")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1mif4"]
+particle_flag_align_y = true
+emission_shape = 3
+emission_box_extents = Vector3(5, 5, 5)
+angle_min = -720.0
+angle_max = 720.0
+initial_velocity_min = 10.0
+initial_velocity_max = 10.0
+gravity = Vector3(0, -1, 0)
+scale_min = 0.1
+scale_curve = SubResource("CurveTexture_a5od6")
+turbulence_enabled = true
+turbulence_noise_speed_random = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pjxle"]
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.757479, 0.44358, 0.204481, 1)
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_keapx"]
+material = SubResource("StandardMaterial3D_pjxle")
+size = Vector2(0.1, 0.1)
+
+[sub_resource type="Gradient" id="Gradient_qhan4"]
+offsets = PackedFloat32Array(0, 0.472727, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_30gau"]
+gradient = SubResource("Gradient_qhan4")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ivo1o"]
+emission_shape = 3
+emission_box_extents = Vector3(20, 1, 20)
+direction = Vector3(-1, 0, -1)
+spread = 0.0
+initial_velocity_min = 1.0
+initial_velocity_max = 2.0
+gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("GradientTexture1D_30gau")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0nfee"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.698039, 0.411765, 0.176471, 1)
+albedo_texture = ExtResource("9_rjp6g")
+billboard_mode = 1
+billboard_keep_scale = true
+proximity_fade_enabled = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_3d53p"]
+material = SubResource("StandardMaterial3D_0nfee")
 
 [sub_resource type="Gradient" id="Gradient_qj55j"]
 offsets = PackedFloat32Array(0.745283, 1)
@@ -284,11 +347,8 @@ _data = {
 "RESET": SubResource("Animation_vs3cq")
 }
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_w26ob"]
-shader = ExtResource("4_udfpf")
-
 [sub_resource type="ViewportTexture" id="ViewportTexture_d215g"]
-viewport_path = NodePath("SandPlanes/Sand/SandViewport")
+viewport_path = NodePath("Sand/SandViewport")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_qhry0"]
 seed = 635
@@ -405,117 +465,17 @@ shader_parameter/deformMask = SubResource("ViewportTexture_d215g")
 [sub_resource type="PlaneMesh" id="PlaneMesh_sqll5"]
 resource_local_to_scene = true
 material = SubResource("ShaderMaterial_kk2af")
-size = Vector2(50, 50)
-subdivide_width = 500
-subdivide_depth = 500
+size = Vector2(200, 200)
+subdivide_width = 2000
+subdivide_depth = 2000
 
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_xr1be"]
-data = PackedVector3Array(25, 0, 25, -25, 0, 25, 25, 0, -25, -25, 0, 25, -25, 0, -25, 25, 0, -25)
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_pboc5"]
+data = PackedVector3Array(100, 0, 100, -100, 0, 100, 100, 0, -100, -100, 0, 100, -100, 0, -100, 100, 0, -100)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_adw5w"]
-viewport_path = NodePath("SandPlanes/Sand/SandViewport")
-
-[sub_resource type="Curve" id="Curve_vfoe3"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.326087, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="CurveTexture" id="CurveTexture_a5od6"]
-curve = SubResource("Curve_vfoe3")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1mif4"]
-particle_flag_align_y = true
-emission_shape = 3
-emission_box_extents = Vector3(5, 5, 5)
-angle_min = -720.0
-angle_max = 720.0
-initial_velocity_min = 10.0
-initial_velocity_max = 10.0
-gravity = Vector3(0, -1, 0)
-scale_min = 0.1
-scale_curve = SubResource("CurveTexture_a5od6")
-turbulence_enabled = true
-turbulence_noise_speed_random = 0.5
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pjxle"]
-shading_mode = 0
-vertex_color_use_as_albedo = true
-albedo_color = Color(0.757479, 0.44358, 0.204481, 1)
-billboard_mode = 3
-billboard_keep_scale = true
-particles_anim_h_frames = 1
-particles_anim_v_frames = 1
-particles_anim_loop = false
-
-[sub_resource type="QuadMesh" id="QuadMesh_keapx"]
-material = SubResource("StandardMaterial3D_pjxle")
-size = Vector2(0.1, 0.1)
-
-[sub_resource type="Gradient" id="Gradient_qhan4"]
-offsets = PackedFloat32Array(0, 0.472727, 1)
-colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_30gau"]
-gradient = SubResource("Gradient_qhan4")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ivo1o"]
-emission_shape = 3
-emission_box_extents = Vector3(20, 1, 20)
-direction = Vector3(-1, 0, -1)
-spread = 0.0
-initial_velocity_min = 1.0
-initial_velocity_max = 2.0
-gravity = Vector3(0, 0, 0)
-color_ramp = SubResource("GradientTexture1D_30gau")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0nfee"]
-transparency = 1
-shading_mode = 0
-vertex_color_use_as_albedo = true
-albedo_color = Color(0.698039, 0.411765, 0.176471, 1)
-albedo_texture = ExtResource("9_rjp6g")
-billboard_mode = 1
-billboard_keep_scale = true
-proximity_fade_enabled = true
-
-[sub_resource type="QuadMesh" id="QuadMesh_3d53p"]
-material = SubResource("StandardMaterial3D_0nfee")
-
-[sub_resource type="Environment" id="Environment_xw37x"]
-background_mode = 1
-background_color = Color(0.80592, 0.557741, 0.390489, 1)
-ambient_light_source = 2
-ambient_light_color = Color(0.807843, 0.556863, 0.392157, 1)
-tonemap_mode = 3
-glow_enabled = true
+viewport_path = NodePath("Sand/SandViewport")
 
 [node name="World" type="Node3D"]
-
-[node name="Environment" type="Node3D" parent="."]
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
-environment = SubResource("Environment_3u4wx")
-
-[node name="Sun" type="DirectionalLight3D" parent="Environment"]
-transform = Transform3D(1, 0, 0, 0, 0.258816, 0.965927, 0, -0.965927, 0.258816, 0, 0, 0)
-light_cull_mask = 4294967293
-directional_shadow_split_1 = 0.05
-directional_shadow_split_2 = 0.1
-directional_shadow_split_3 = 0.25
-directional_shadow_blend_splits = true
-directional_shadow_max_distance = 50.0
-
-[node name="HeatDistortion" type="MeshInstance3D" parent="Environment"]
-visible = false
-extra_cull_margin = 16384.0
-mesh = SubResource("PlaneMesh_om3mu")
-skeleton = NodePath("../../VFX")
-
-[node name="DayNightCycle" type="AnimationPlayer" parent="Environment"]
-libraries = {
-"": SubResource("AnimationLibrary_yfjjx")
-}
-autoplay = "DayNightCycle"
-speed_scale = 0.005
 
 [node name="VFX" type="Node3D" parent="."]
 
@@ -534,119 +494,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("3_lcvsg")
-
-[node name="SandPlanes" type="Node3D" parent="."]
-
-[node name="Sand" type="MeshInstance3D" parent="SandPlanes"]
-mesh = SubResource("PlaneMesh_sqll5")
-skeleton = NodePath("../..")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="SandPlanes/Sand"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SandPlanes/Sand/StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_xr1be")
-
-[node name="SandViewport" type="SubViewport" parent="SandPlanes/Sand" node_paths=PackedStringArray("player")]
-transparent_bg = true
-render_target_clear_mode = 2
-render_target_update_mode = 4
-script = ExtResource("8_r47ni")
-worldextents = Rect2(0, 0, 50, 50)
-player = NodePath("../../../Player")
-
-[node name="SandPaintbrush" type="Sprite2D" parent="SandPlanes/Sand/SandViewport"]
-texture = ExtResource("9_rjp6g")
-
-[node name="ClearBrush" type="Sprite2D" parent="SandPlanes/Sand/SandViewport"]
-modulate = Color(0, 0, 0, 1)
-scale = Vector2(2, 2)
-texture = ExtResource("9_rjp6g")
-
-[node name="SandVisual" type="Sprite2D" parent="SandPlanes/Sand"]
-visible = false
-position = Vector2(68, 69)
-scale = Vector2(0.25, 0.25)
-texture = SubResource("ViewportTexture_adw5w")
-
-[node name="Sand2" type="MeshInstance3D" parent="SandPlanes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -50)
-mesh = SubResource("PlaneMesh_sqll5")
-skeleton = NodePath("../..")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="SandPlanes/Sand2"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SandPlanes/Sand2/StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_xr1be")
-
-[node name="Sand3" type="MeshInstance3D" parent="SandPlanes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 0, 0)
-mesh = SubResource("PlaneMesh_sqll5")
-skeleton = NodePath("../..")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="SandPlanes/Sand3"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SandPlanes/Sand3/StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_xr1be")
-
-[node name="Sand4" type="MeshInstance3D" parent="SandPlanes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50)
-mesh = SubResource("PlaneMesh_sqll5")
-skeleton = NodePath("../..")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="SandPlanes/Sand4"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SandPlanes/Sand4/StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_xr1be")
-
-[node name="Sand5" type="MeshInstance3D" parent="SandPlanes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 0, 0)
-mesh = SubResource("PlaneMesh_sqll5")
-skeleton = NodePath("../..")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="SandPlanes/Sand5"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SandPlanes/Sand5/StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_xr1be")
-
-[node name="Sand6" type="MeshInstance3D" parent="SandPlanes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 0, -50)
-mesh = SubResource("PlaneMesh_sqll5")
-skeleton = NodePath("../..")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="SandPlanes/Sand6"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SandPlanes/Sand6/StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_xr1be")
-
-[node name="Sand7" type="MeshInstance3D" parent="SandPlanes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 0, -50)
-mesh = SubResource("PlaneMesh_sqll5")
-skeleton = NodePath("../..")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="SandPlanes/Sand7"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SandPlanes/Sand7/StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_xr1be")
-
-[node name="Sand8" type="MeshInstance3D" parent="SandPlanes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 0, 50)
-mesh = SubResource("PlaneMesh_sqll5")
-skeleton = NodePath("../..")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="SandPlanes/Sand8"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SandPlanes/Sand8/StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_xr1be")
-
-[node name="Sand9" type="MeshInstance3D" parent="SandPlanes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 0, 50)
-mesh = SubResource("PlaneMesh_sqll5")
-skeleton = NodePath("../..")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="SandPlanes/Sand9"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SandPlanes/Sand9/StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_xr1be")
 
 [node name="Player" parent="." instance=ExtResource("2_2km2c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -668,49 +515,61 @@ lifetime = 2.0
 process_material = SubResource("ParticleProcessMaterial_ivo1o")
 draw_pass_1 = SubResource("QuadMesh_3d53p")
 
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_3u4wx")
+
+[node name="Sun" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 0.258816, 0.965927, 0, -0.965927, 0.258816, 0, 0, 0)
+light_cull_mask = 4294967293
+directional_shadow_split_1 = 0.05
+directional_shadow_split_2 = 0.1
+directional_shadow_split_3 = 0.25
+directional_shadow_blend_splits = true
+directional_shadow_max_distance = 50.0
+
+[node name="HeatDistortion" type="MeshInstance3D" parent="Environment"]
+extra_cull_margin = 16384.0
+mesh = SubResource("PlaneMesh_om3mu")
+skeleton = NodePath("../../VFX")
+
+[node name="DayNightCycle" type="AnimationPlayer" parent="Environment"]
+libraries = {
+"": SubResource("AnimationLibrary_yfjjx")
+}
+autoplay = "DayNightCycle"
+speed_scale = 0.005
+
+[node name="Sand" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_sqll5")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Sand"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sand/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_pboc5")
+
+[node name="SandViewport" type="SubViewport" parent="Sand" node_paths=PackedStringArray("player")]
+transparent_bg = true
+render_target_clear_mode = 2
+render_target_update_mode = 4
+script = ExtResource("8_r47ni")
+worldextents = Rect2(0, 0, 200, 200)
+player = NodePath("../../Player")
+
+[node name="SandPaintbrush" type="Sprite2D" parent="Sand/SandViewport"]
+texture = ExtResource("9_rjp6g")
+
+[node name="ClearBrush" type="Sprite2D" parent="Sand/SandViewport"]
+modulate = Color(0, 0, 0, 1)
+scale = Vector2(2, 2)
+texture = ExtResource("9_rjp6g")
+
+[node name="SandVisual" type="Sprite2D" parent="Sand"]
+visible = false
+position = Vector2(68, 69)
+scale = Vector2(0.25, 0.25)
+texture = SubResource("ViewportTexture_adw5w")
+
 [node name="FireExtinguisher" parent="." instance=ExtResource("10_ow0kb")]
 transform = Transform3D(0.943164, 0.312066, -0.114262, -0.22021, 0.844373, 0.488408, 0.248895, -0.435487, 0.865102, 0.806391, 0.480473, -2.65904)
-
-[node name="Tree" parent="." instance=ExtResource("11_3i617")]
-transform = Transform3D(-0.71877, 0, -0.695248, 0, 1, 0, 0.695248, 0, -0.71877, -2.85366, -0.154401, -15.7252)
-
-[node name="Minimap" type="Node3D" parent="."]
-
-[node name="ColorRect" type="ColorRect" parent="Minimap"]
-visible = false
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 5.0
-offset_top = -271.0
-offset_right = 561.0
-offset_bottom = 269.0
-grow_vertical = 0
-scale = Vector2(0.485, 0.485)
-color = Color(0, 0, 0, 1)
-
-[node name="SubViewportContainer" type="SubViewportContainer" parent="Minimap/ColorRect"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -256.0
-offset_top = -256.0
-offset_right = 256.0
-offset_bottom = 256.0
-grow_horizontal = 2
-grow_vertical = 2
-stretch = true
-
-[node name="SubViewport" type="SubViewport" parent="Minimap/ColorRect/SubViewportContainer"]
-handle_input_locally = false
-render_target_update_mode = 0
-
-[node name="Camera3D" type="Camera3D" parent="Minimap/ColorRect/SubViewportContainer/SubViewport"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 80, 0)
-cull_mask = 5
-environment = SubResource("Environment_xw37x")
-projection = 1
-size = 150.0

@@ -3,7 +3,9 @@ extends CharacterBody3D
 
 
 
-@export var speed = 3.0
+var speed = 3.0
+@export var walk_speed = 3.0
+@export var crouch_speed = 2.0
 @export var friction : float = 0.5
 
 
@@ -12,9 +14,10 @@ extends CharacterBody3D
 
 @onready var camera = $Camera
 @onready var animation_player = $Camera/AnimationPlayer
-
 @onready var look_cast = $Camera/LookCast
+@onready var friend_ui = $GUI/FriendUI
 
+var crouched : bool = false
 
 var mouse_visible : bool = false
 
@@ -30,6 +33,9 @@ func _unhandled_input(event):
 
 
 func _physics_process(delta):
+	
+	interact()
+	
 	if Input.is_action_just_pressed("Show_Mouse"):
 		mouse_visible = !mouse_visible
 	
@@ -39,11 +45,19 @@ func _physics_process(delta):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	
 	
+	if Input.is_action_just_pressed("Crouch"):
+		crouched = !crouched
+	
+	if crouched:
+		speed = crouch_speed
+	else:
+		speed = walk_speed
+	
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	
 	var input_dir = Input.get_vector("Left", "Right", "Forward", "Back")
-	var direction = (camera.global_transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	var direction = (global_transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
 		velocity.x = lerp(velocity.x,direction.x * speed,0.1)
 		velocity.z = lerp(velocity.z,direction.z * speed,0.1)
@@ -52,16 +66,47 @@ func _physics_process(delta):
 		velocity.z = move_toward(velocity.z, 0, 0.5)
 	
 	if direction:
-		animation_player.play("Head_Bob")
+		if crouched:
+			animation_player.play("Crouch_Walk")
+		else:
+			animation_player.play("Walk")
 	else:
-		animation_player.play("Stand")
+		if crouched:
+			animation_player.play("Crouch")
+		else:
+			animation_player.play("Stand")
 	
 	
 	move_and_slide()
+	
+	
+	if abs(global_position.x) > 50.0:
+		if global_position.x > 50:
+			global_position.x = -50
+		if global_position.x < -50:
+			global_position.x = 50
+	
+	if abs(global_position.z) > 50.0:
+		if global_position.z > 50:
+			global_position.z = -50
+		if global_position.z < -50:
+			global_position.z = 50
 
+
+@onready var right_click = $GUI/HUD/RightClick
 
 func interact():
 	if look_cast.is_colliding():
-		var _interact_with : Node = look_cast.get_collider(0)
 		
+		right_click.show()
 		
+		var interact_with : Node = look_cast.get_collider(0)
+		if interact_with.is_in_group("Interactable"):
+			if Input.is_action_just_pressed("Interact"):
+				interact_with.interact(self) 
+	else:
+		right_click.hide()
+		
+	
+func gain_friend(friend : Friend):
+	friend_ui.gain_friend(friend)

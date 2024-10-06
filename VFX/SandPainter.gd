@@ -19,7 +19,7 @@ func _ready():
 func _process(_delta):
 	
 	var half_world_extents = worldextents.size * 0.5
-	var player_pos = Vector2(player.position.x, player.position.z)
+	var player_pos = Vector2(wrapf(player.position.x,-25.0,25.0), wrapf(player.position.z,-25.0,25.0))
 	
 	player_pos += half_world_extents
 	var paintbrush_position = player_pos / worldextents.size

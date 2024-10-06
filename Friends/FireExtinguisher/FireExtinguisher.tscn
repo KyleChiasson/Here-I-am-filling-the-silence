@@ -1,20 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://ddjnnv8dqoig5"]
+[gd_scene load_steps=5 format=3 uid="uid://ddjnnv8dqoig5"]
 
-[ext_resource type="Script" path="res://Friends/FireExtinguisher/fire_extinguisher.gd" id="1_3nja8"]
-[ext_resource type="ArrayMesh" uid="uid://qs3lbu2r23v6" path="res://Friends/FireExtinguisher/FireExtinguisher.tres" id="1_v1lsr"]
+[ext_resource type="Resource" uid="uid://cyt53j6lneaxt" path="res://Friends/FireExtinguisher/FireExtinguisher.tres" id="1_v1lsr"]
+[ext_resource type="Script" path="res://UI/friendObj.gd" id="1_vvywp"]
+[ext_resource type="ArrayMesh" uid="uid://qs3lbu2r23v6" path="res://Friends/FireExtinguisher/FireExtinguisherMesh.tres" id="3_gbyiu"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_v1d8x"]
-size = Vector3(1, 2, 1)
+size = Vector3(0.5, 1, 0.5)
 
-[node name="FireExtinguisher" type="StaticBody3D"]
-collision_layer = 0
+[node name="FireExtinguisher" type="StaticBody3D" groups=["Interactable"]]
+collision_layer = 2
 collision_mask = 0
-script = ExtResource("1_3nja8")
+script = ExtResource("1_vvywp")
+friend = ExtResource("1_v1lsr")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="Mesh" type="MeshInstance3D" parent="."]
 cast_shadow = 0
-mesh = ExtResource("1_v1lsr")
+mesh = ExtResource("3_gbyiu")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.172901, 0)
 shape = SubResource("BoxShape3D_v1d8x")

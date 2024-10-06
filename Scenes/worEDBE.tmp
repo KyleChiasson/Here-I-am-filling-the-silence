@@ -1,11 +1,7 @@
-[gd_scene load_steps=67 format=3 uid="uid://cy0n5wt8t00ut"]
+[gd_scene load_steps=65 format=3 uid="uid://cy0n5wt8t00ut"]
 
 [ext_resource type="Shader" path="res://VFX/Sand.gdshader" id="1_af27u"]
-<<<<<<< Updated upstream
-[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="2_2km2c"]
-=======
 [ext_resource type="PackedScene" uid="uid://dee5g48ibmrjj" path="res://Scenes/player.tscn" id="2_2km2c"]
->>>>>>> Stashed changes
 [ext_resource type="Texture2D" uid="uid://dfoduoh537ikq" path="res://icon.svg" id="2_gi43k"]
 [ext_resource type="Shader" path="res://VFX/Distortion.gdshader" id="3_ftkt7"]
 [ext_resource type="Script" path="res://VFX/chromatic_aberration.gd" id="3_lcvsg"]
@@ -14,7 +10,6 @@
 [ext_resource type="Script" path="res://VFX/SandPainter.gd" id="8_r47ni"]
 [ext_resource type="Texture2D" uid="uid://dnlkdn2iq35bu" path="res://VFX/BlurCircleMask.png" id="9_rjp6g"]
 [ext_resource type="PackedScene" uid="uid://ddjnnv8dqoig5" path="res://Friends/FireExtinguisher/FireExtinguisher.tscn" id="10_ow0kb"]
-[ext_resource type="PackedScene" uid="uid://d0xa08888e7gm" path="res://Environment/Foliage/Tree/tree.tscn" id="11_3i617"]
 
 [sub_resource type="Gradient" id="Gradient_qj55j"]
 offsets = PackedFloat32Array(0.745283, 1)
@@ -62,7 +57,6 @@ glow_normalized = true
 glow_intensity = 8.0
 glow_blend_mode = 1
 glow_hdr_threshold = 0.37
-fog_enabled = true
 fog_mode = 1
 fog_light_color = Color(0.699467, 0.413232, 0.17669, 1)
 fog_density = 1.0
@@ -480,14 +474,6 @@ proximity_fade_enabled = true
 [sub_resource type="QuadMesh" id="QuadMesh_3d53p"]
 material = SubResource("StandardMaterial3D_0nfee")
 
-[sub_resource type="Environment" id="Environment_xw37x"]
-background_mode = 1
-background_color = Color(0.80592, 0.557741, 0.390489, 1)
-ambient_light_source = 2
-ambient_light_color = Color(0.807843, 0.556863, 0.392157, 1)
-tonemap_mode = 3
-glow_enabled = true
-
 [node name="World" type="Node3D"]
 
 [node name="Environment" type="Node3D" parent="."]
@@ -563,7 +549,6 @@ scale = Vector2(2, 2)
 texture = ExtResource("9_rjp6g")
 
 [node name="SandVisual" type="Sprite2D" parent="SandPlanes/Sand"]
-visible = false
 position = Vector2(68, 69)
 scale = Vector2(0.25, 0.25)
 texture = SubResource("ViewportTexture_adw5w")
@@ -650,6 +635,7 @@ shape = SubResource("ConcavePolygonShape3D_xr1be")
 
 [node name="Player" parent="." instance=ExtResource("2_2km2c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+walk_speed = 10.0
 
 [node name="Sand" type="GPUParticles3D" parent="Player"]
 visible = false
@@ -670,47 +656,3 @@ draw_pass_1 = SubResource("QuadMesh_3d53p")
 
 [node name="FireExtinguisher" parent="." instance=ExtResource("10_ow0kb")]
 transform = Transform3D(0.943164, 0.312066, -0.114262, -0.22021, 0.844373, 0.488408, 0.248895, -0.435487, 0.865102, 0.806391, 0.480473, -2.65904)
-
-[node name="Tree" parent="." instance=ExtResource("11_3i617")]
-transform = Transform3D(-0.71877, 0, -0.695248, 0, 1, 0, 0.695248, 0, -0.71877, -2.85366, -0.154401, -15.7252)
-
-[node name="Minimap" type="Node3D" parent="."]
-
-[node name="ColorRect" type="ColorRect" parent="Minimap"]
-visible = false
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 5.0
-offset_top = -271.0
-offset_right = 561.0
-offset_bottom = 269.0
-grow_vertical = 0
-scale = Vector2(0.485, 0.485)
-color = Color(0, 0, 0, 1)
-
-[node name="SubViewportContainer" type="SubViewportContainer" parent="Minimap/ColorRect"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -256.0
-offset_top = -256.0
-offset_right = 256.0
-offset_bottom = 256.0
-grow_horizontal = 2
-grow_vertical = 2
-stretch = true
-
-[node name="SubViewport" type="SubViewport" parent="Minimap/ColorRect/SubViewportContainer"]
-handle_input_locally = false
-render_target_update_mode = 0
-
-[node name="Camera3D" type="Camera3D" parent="Minimap/ColorRect/SubViewportContainer/SubViewport"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 80, 0)
-cull_mask = 5
-environment = SubResource("Environment_xw37x")
-projection = 1
-size = 150.0
