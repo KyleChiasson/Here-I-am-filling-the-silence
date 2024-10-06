@@ -1,6 +1,11 @@
 extends CharacterBody3D
 
 
+<<<<<<< Updated upstream
+=======
+signal friend_collected(friend : Friend)
+signal distance_traveled(distance : float)
+>>>>>>> Stashed changes
 
 
 @export var speed = 3.0
@@ -10,8 +15,15 @@ extends CharacterBody3D
 @export var mouse_sensitivity : float = 0.5
 
 
+<<<<<<< Updated upstream
 @onready var camera = $Camera
 @onready var animation_player = $Camera/AnimationPlayer
+=======
+@onready var camera = $CameraPivot/Camera
+@onready var animation_player = $CameraPivot/Camera/AnimationPlayer
+@onready var look_cast = $CameraPivot/Camera/LookCast
+@onready var friend_ui = $GUI/FriendUI
+>>>>>>> Stashed changes
 
 @onready var look_cast = $Camera/LookCast
 
@@ -65,3 +77,17 @@ func interact():
 		var _interact_with : Node = look_cast.get_collider(0)
 		
 		
+<<<<<<< Updated upstream
+=======
+		var interact_with : Node = look_cast.get_collider(0)
+		if interact_with.is_in_group("Interactable"):
+			if Input.is_action_just_pressed("Interact"):
+				interact_with.interact(self) 
+	else:
+		right_click.hide()
+		
+	
+func gain_friend(friend : Friend):
+	friend_ui.gain_friend(friend)
+	friend_collected.emit(friend)
+>>>>>>> Stashed changes

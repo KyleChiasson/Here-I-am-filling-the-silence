@@ -14,16 +14,16 @@ void vertex() {
 }
 
 void fragment() {
-	
+
 	float depth = abs(texture(depth_texture,SCREEN_UV).r);
 	depth = 1.0 - 2.0 * depth;
-	depth = pow(depth,20.0)*0.25;
-	
-	float noise_value = texture(noise,SCREEN_UV+TIME*0.2).r * texture(noise2,SCREEN_UV+TIME*0.1).r*0.1; 
-	
+	depth = pow(depth,50.0)*0.25;
+
+	float noise_value = texture(noise,SCREEN_UV+TIME*0.2).r * texture(noise2,SCREEN_UV+TIME*0.1).r*0.1;
+
 	vec3 screen = texture(screen_texture,SCREEN_UV+(noise_value-0.05)*depth).rgb;
-	
-	
+
+
 	ALBEDO = screen;
 	ALPHA = alpha;
 	//ALBEDO = vec3(depth);
