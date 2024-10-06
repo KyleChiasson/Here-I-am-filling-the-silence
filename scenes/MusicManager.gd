@@ -1,7 +1,7 @@
 extends Node
 
 @onready var audio = [$Background, $Music1, $Music2, $Music3, $Music4, $Music5, $Music6, $Music7]
-var trackAmt = 0
+var trackAmt = 1
 
 func AddTrack():
 	trackAmt += 1

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://blx844hmdmnaj"]
+[gd_scene load_steps=10 format=3 uid="uid://b5hqsqdke1n8w"]
 
 [ext_resource type="Script" path="res://scenes/MusicManager.gd" id="1_8j8vw"]
 [ext_resource type="AudioStream" uid="uid://1cf7npx6ky3" path="res://Sounds/windsound.wav" id="2_5pvr6"]
@@ -20,7 +20,6 @@ bus = &"Music"
 
 [node name="Music1" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_2o1mf")
-volume_db = -80.0
 autoplay = true
 bus = &"Music"
 

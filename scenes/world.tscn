@@ -9,7 +9,7 @@
 [ext_resource type="Shader" path="res://VFX/SkyColor.gdshader" id="6_m8ral"]
 [ext_resource type="Script" path="res://VFX/SandPainter.gd" id="8_r47ni"]
 [ext_resource type="Texture2D" uid="uid://dnlkdn2iq35bu" path="res://VFX/BlurCircleMask.png" id="9_rjp6g"]
-[ext_resource type="PackedScene" uid="uid://blx844hmdmnaj" path="res://scenes/Music.tscn" id="11_r8a63"]
+[ext_resource type="PackedScene" path="res://scenes/Music.tscn" id="11_r8a63"]
 [ext_resource type="PackedScene" uid="uid://b6fkfj5qpulc5" path="res://EventManager/event_manager.tscn" id="12_6r1bi"]
 
 [sub_resource type="Gradient" id="Gradient_qj55j"]
