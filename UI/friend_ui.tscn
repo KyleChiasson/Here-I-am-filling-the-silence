@@ -66,6 +66,8 @@ skeleton = NodePath("../..")
 
 [node name="StaticBody" type="StaticBody3D" parent="FriendContainer/FireExtinguisher"]
 transform = Transform3D(0.958342, 0.285621, 0, -0.285621, 0.958342, 0, 0, 0, 1, -1.685, 0.506, -1.51)
+collision_layer = 0
+collision_mask = 0
 
 [node name="Collision" type="CollisionShape3D" parent="FriendContainer/FireExtinguisher/StaticBody"]
 transform = Transform3D(0.999999, 0, 0, 0, 0.999999, 0, 0, 0, 1, 0, 0, 0)

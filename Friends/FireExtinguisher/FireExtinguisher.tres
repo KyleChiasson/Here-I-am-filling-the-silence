@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="Friend" load_steps=3 format=3 uid="uid://cyt53j6lneaxt"]
+[gd_resource type="Resource" script_class="Friend" load_steps=4 format=3 uid="uid://cyt53j6lneaxt"]
 
 [ext_resource type="Script" path="res://Friends/Resources/Friend.gd" id="1_6l36n"]
 [ext_resource type="ArrayMesh" uid="uid://qs3lbu2r23v6" path="res://Friends/FireExtinguisher/FireExtinguisherMesh.tres" id="1_mbkcf"]
+[ext_resource type="Script" path="res://Friends/Resources/Response.gd" id="1_yc2bt"]
 
 [resource]
 script = ExtResource("1_6l36n")
 Name = "Fire Extinguisher"
 model = ExtResource("1_mbkcf")
-Responses = null
+Responses = Array[ExtResource("1_yc2bt")]([])

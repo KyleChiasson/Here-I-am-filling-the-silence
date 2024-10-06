@@ -37,6 +37,7 @@ func _process(_delta):
 		sand_paintbrush.visible = true
 
 
-func clear(paintbrush_position):
-	await get_tree().create_timer(30.0).timeout
-	clear_brush.position = paintbrush_position * Vector2(size.x, size.y)
+func clear(_paintbrush_position):
+	pass
+	#await get_tree().create_timer(30.0).timeout
+	#clear_brush.position = paintbrush_position * Vector2(size.x, size.y)

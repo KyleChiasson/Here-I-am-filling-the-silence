@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
 
-
+signal distance_traveled(distance : float)
 
 var speed = 3.0
 @export var walk_speed = 3.0
@@ -31,8 +31,10 @@ func _unhandled_input(event):
 			camera.rotation.x = clamp(camera.rotation.x,-1.5,1.5)
 
 
-
+var position_buffer : Vector3 = Vector3(0.0,0.0,0.0)
 func _physics_process(delta):
+	
+	
 	
 	interact()
 	
@@ -91,6 +93,11 @@ func _physics_process(delta):
 			global_position.z = -50
 		if global_position.z < -50:
 			global_position.z = 50
+	
+	if global_position != position_buffer:
+		var distance : float = global_position.distance_to(position_buffer)
+		distance_traveled.emit(distance)
+		position_buffer = global_position
 
 
 @onready var right_click = $GUI/HUD/RightClick
