@@ -1,0 +1,61 @@
+[gd_scene load_steps=10 format=3 uid="uid://blx844hmdmnaj"]
+
+[ext_resource type="Script" path="res://scenes/MusicManager.gd" id="1_8j8vw"]
+[ext_resource type="AudioStream" uid="uid://1cf7npx6ky3" path="res://Sounds/windsound.wav" id="2_5pvr6"]
+[ext_resource type="AudioStream" uid="uid://d4b8kxe41d8xu" path="res://Sounds/track1.wav" id="3_2o1mf"]
+[ext_resource type="AudioStream" uid="uid://c3w6hb0yvg83p" path="res://Sounds/track2.wav" id="4_ynhd4"]
+[ext_resource type="AudioStream" uid="uid://c7bd31gshuliw" path="res://Sounds/track3.wav" id="5_orrs2"]
+[ext_resource type="AudioStream" uid="uid://bc7u8faaty5a3" path="res://Sounds/track4.wav" id="6_y8qm4"]
+[ext_resource type="AudioStream" uid="uid://b6iydo01p5yg" path="res://Sounds/track5.wav" id="7_5ivqd"]
+[ext_resource type="AudioStream" uid="uid://de1jnyuyp3rqy" path="res://Sounds/track6.wav" id="8_4dy1y"]
+[ext_resource type="AudioStream" uid="uid://7wx882ympgcn" path="res://Sounds/track7.wav" id="9_1wjwb"]
+
+[node name="Music" type="Node"]
+script = ExtResource("1_8j8vw")
+
+[node name="Background" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_5pvr6")
+autoplay = true
+bus = &"Music"
+
+[node name="Music1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_2o1mf")
+volume_db = -80.0
+autoplay = true
+bus = &"Music"
+
+[node name="Music2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_ynhd4")
+volume_db = -80.0
+autoplay = true
+bus = &"Music"
+
+[node name="Music3" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_orrs2")
+volume_db = -80.0
+autoplay = true
+bus = &"Music"
+
+[node name="Music4" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_y8qm4")
+volume_db = -80.0
+autoplay = true
+bus = &"Music"
+
+[node name="Music5" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_5ivqd")
+volume_db = -80.0
+autoplay = true
+bus = &"Music"
+
+[node name="Music6" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_4dy1y")
+volume_db = -80.0
+autoplay = true
+bus = &"Music"
+
+[node name="Music7" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_1wjwb")
+volume_db = -80.0
+autoplay = true
+bus = &"Music"

@@ -2,6 +2,7 @@ extends CharacterBody3D
 
 
 signal distance_traveled(distance : float)
+signal friend_gained
 
 var speed = 3.0
 @export var walk_speed = 3.0
@@ -117,3 +118,4 @@ func interact():
 	
 func gain_friend(friend : Friend):
 	friend_ui.gain_friend(friend)
+	friend_gained.emit()
