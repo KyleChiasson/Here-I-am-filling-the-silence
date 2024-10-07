@@ -1,13 +1,21 @@
 extends Node
 
 @onready var audio = [$Background, $Music1, $Music2, $Music3, $Music4, $Music5, $Music6, $Music7]
-var trackAmt = 1
+var trackAmt = 0
 
 func AddTrack():
 	trackAmt += 1
 	if(trackAmt <= 7):
 		audio[trackAmt].volume_db = 0
-		print("Added track" + trackAmt)
+		print("Added track" + str(trackAmt))
+		if(trackAmt == 1):
+			trackAmt += 1
+			audio[trackAmt].volume_db = 0
+			print("Added track" + str(trackAmt))
+		if(trackAmt == 3):
+			trackAmt += 1
+			audio[trackAmt].volume_db = 0
+			print("Added track" + str(trackAmt))
 
 
 func _on_player_friend_gained() -> void:

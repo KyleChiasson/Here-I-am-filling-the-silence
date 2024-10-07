@@ -4,11 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://cu4oxgp7npllq"
-valid=false
+path="res://.godot/imported/Friends.blend-9fce59625adb1521386d83144fb35256.scn"
 
 [deps]
 
 source_file="res://Friends/Friends.blend"
+dest_files=["res://.godot/imported/Friends.blend-9fce59625adb1521386d83144fb35256.scn"]
 
 [params]
 
