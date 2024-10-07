@@ -8,15 +8,10 @@ func AddTrack():
 	if(trackAmt <= 7):
 		audio[trackAmt].volume_db = 0
 		print("Added track" + str(trackAmt))
-		if(trackAmt == 1):
+		if(trackAmt == 2 or trackAmt == 4):
 			trackAmt += 1
 			audio[trackAmt].volume_db = 0
 			print("Added track" + str(trackAmt))
-		if(trackAmt == 3):
-			trackAmt += 1
-			audio[trackAmt].volume_db = 0
-			print("Added track" + str(trackAmt))
-
 
 func _on_player_friend_gained() -> void:
 	AddTrack()
